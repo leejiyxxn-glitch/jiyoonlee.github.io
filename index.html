@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 포트폴리오 | SKKU</title>
+    <title>Jiyoon Lee | Portfolio</title>
     <style>
-        /* 기본 설정 및 다크 테마 변수 */
+        /* 기본 설정 및 변수 */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-            --skku-green: #006341; /* 성균관대 상징색 포인트 */
+            --bg-color: #0a0a0a;
+            --card-bg: #161616;
+            --accent-gradient: linear-gradient(135deg, #ff0080 0%, #7928ca 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --skku-green: #006341;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            font-family: 'Pretendard', sans-serif;
         }
 
         html {
@@ -28,9 +28,8 @@
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-main);
+            color: var(--text-primary);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         /* 네비게이션 */
@@ -38,48 +37,44 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.8);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            padding: 1rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .nav-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-        }
-
         nav a {
-            color: var(--text-main);
+            color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: 0.3s;
         }
 
         nav a:hover {
-            color: #38bdf8;
+            color: var(--text-primary);
         }
 
-        /* 섹션 공통 스타일 */
+        /* 섹션 공통 */
         section {
-            padding: 100px 20px;
-            max-width: 1000px;
+            padding: 120px 20px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 3rem;
-            text-align: center;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* 히어로 섹션 */
+        /* Hero 섹션 */
         #home {
             height: 100vh;
             display: flex;
@@ -87,153 +82,149 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
 
         .hero-name {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
         }
 
-        .hero-major {
-            font-size: 1.5rem;
-            color: var(--text-dim);
-            margin-bottom: 2rem;
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
         }
 
-        /* 프로젝트 카드 */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        /* About 섹션 */
+        .about-text {
+            font-size: 1.25rem;
+            word-break: keep-all;
+            color: #ececec;
+            max-width: 700px;
+            border-left: 3px solid #ff0080;
+            padding-left: 20px;
         }
 
-        .card {
+        /* Projects 섹션 */
+        .project-card {
             background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1rem;
+            padding: 30px;
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s, border-color 0.3s;
+            transition: 0.4s;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: #38bdf8;
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #7928ca;
         }
 
-        /* 스킬 배지 */
-        .skills-container {
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        /* Skills 섹션 */
+        .skills-tag-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
+            gap: 12px;
         }
 
-        .skill-badge {
-            background: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+        .skill-tag {
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--text-secondary);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
-        /* 연락처 섹션 */
-        .contact-box {
+        /* Contact 섹션 */
+        .contact-info {
             text-align: center;
-            background: var(--card-bg);
-            padding: 3rem;
-            border-radius: 1.5rem;
-        }
-
-        .contact-link {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.8rem 2rem;
+            padding: 40px;
             background: var(--accent-gradient);
-            color: white;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: bold;
+            border-radius: 20px;
         }
 
-        /* 반응형 설정 */
-        @media (max-width: 768px) {
-            .hero-name { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
+        .contact-info p {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .email-link {
+            color: white;
+            text-decoration: underline;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* 반응형 */
+        @media (max-width: 600px) {
+            section { padding: 80px 20px; }
+            .hero-name { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-container">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#contact">Contact</a>
-        </div>
+        <a href="#home">HOME</a>
+        <a href="#about">ABOUT</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#contact">CONTACT</a>
     </nav>
 
     <section id="home">
-        <h1 class="hero-name">[이름을 입력하세요]</h1>
-        <p class="hero-major">[전공을 입력하세요] @ SKKU</p>
-        <p style="color: #4ade80;">성균관대학교의 열정적인 인재</p>
+        <h1 class="hero-name">JIYOON LEE</h1>
+        <p class="hero-sub">Fashion Design at SKKU</p>
     </section>
 
     <section id="about">
         <h2 class="section-title">About Me</h2>
-        <div style="text-align: center; max-width: 700px; margin: 0 auto;">
-            <p style="font-size: 1.2rem; color: var(--text-dim);">
-                [여기에 본인에 대한 소개를 2~3문장 적어주세요. 예: 문제를 해결하는 과정을 즐기는 개발자입니다. 
-                성균관대학교에서 OO을 전공하며 창의적인 프로젝트를 수행하고 있습니다.]
-            </p>
+        <div class="about-text">
+            Fashion is my big passion, and I’ve always been curious about the marketing behind my favorite brands. 
+            I want to grow into a marketer who can share cool styles with the world.
         </div>
     </section>
 
     <section id="projects">
         <h2 class="section-title">Projects</h2>
-        <div class="project-grid">
-            <div class="card">
-                <h3>Art Gallery Dashboard</h3>
-                <p style="color: var(--text-dim); margin-top: 1rem;">예술 작품 데이터를 시각화하고 관리할 수 있는 모던한 대시보드 프로젝트입니다.</p>
-            </div>
-            <div class="card">
-                <h3>Campus Life App</h3>
-                <p style="color: var(--text-dim); margin-top: 1rem;">SKKU 학생들을 위한 커뮤니티 및 시간표 관리 애플리케이션입니다.</p>
-            </div>
-            <div class="card">
-                <h3>AI Portfolio Generator</h3>
-                <p style="color: var(--text-dim); margin-top: 1rem;">사용자의 데이터를 기반으로 웹사이트를 자동 생성해주는 도구입니다.</p>
-            </div>
+        <div class="project-card">
+            <h3 class="project-title">The Language of Fashion Dashboard</h3>
+            <p style="color: var(--text-secondary);">Analyzing How Korean Fashion Brands Construct Trendiness Through Words</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #7928ca;">#FashionAnalysis #MarketingStrategy #Trends</p>
         </div>
     </section>
 
     <section id="skills">
         <h2 class="section-title">Skills</h2>
-        <div class="skills-container">
-            <span class="skill-badge">HTML/CSS</span>
-            <span class="skill-badge">JavaScript</span>
-            <span class="skill-badge">React</span>
-            <span class="skill-badge">Python</span>
-            <span class="skill-badge">UI/UX Design</span>
-            <span class="skill-badge">Git</span>
+        <div class="skills-tag-container">
+            <span class="skill-tag">Fashion Design</span>
+            <span class="skill-tag">Trend Analysis</span>
+            <span class="skill-tag">Brand Marketing</span>
+            <span class="skill-tag">Visual Merchandising</span>
+            <span class="skill-tag">Adobe Illustrator</span>
+            <span class="skill-tag">Creative Direction</span>
         </div>
     </section>
 
     <section id="contact">
         <h2 class="section-title">Contact</h2>
-        <div class="contact-box">
-            <p>함께 성장할 기회를 찾고 계신가요? 언제든 연락주세요!</p>
-            <p style="margin: 1rem 0; color: var(--text-dim);">Email: yourname@skku.edu</p>
-            <a href="mailto:yourname@skku.edu" class="contact-link">이메일 보내기</a>
+        <div class="contact-info">
+            <p>Let's create something beautiful together.</p>
+            <a href="mailto:jiyoon@skku.edu" class="email-link">jiyoon@email.com</a>
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.9rem;">
-        &copy; 2024 [Your Name]. All rights reserved.
+    <footer style="text-align: center; padding-bottom: 50px; color: #444; font-size: 0.8rem;">
+        &copy; 2024 Jiyoon Lee. Powered by SKKU Fashion.
     </footer>
 
 </body>
