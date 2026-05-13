@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jiyoon Lee | Portfolio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --card: #141414;
+      --text: #f0ede8;
+      --muted: #6b6866;
+      --accent: #c9a96e;
+      --rose: #c47d7d;
+      --border: rgba(240,237,232,0.08);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.4s ease, width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.5;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 1.6rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    #home {
+      height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 20vw, 18rem);
+      font-weight: 300;
+      font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(240,237,232,0.04);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 11vw, 9rem);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+    .hero-line {
+      position: absolute; top: 0; right: 3rem;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, var(--border) 30%, var(--border) 70%, transparent 100%);
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: 3rem;
+      writing-mode: vertical-rl;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 10rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 4rem;
+      color: var(--text);
+    }
+    .section-title em { font-style: italic; color: var(--muted); }
+
+    /* Divider */
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+      margin: 0 0 10rem;
+      max-width: 1100px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ABOUT */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.3;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.5rem;
+    }
+    .about-body {
+      font-size: 1rem;
+      color: rgba(240,237,232,0.65);
+      line-height: 1.9;
+    }
+    .about-body p + p { margin-top: 1.2rem; }
+    .about-detail {
+      margin-top: 2.5rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .about-detail-row {
+      display: flex; gap: 1rem;
+      font-size: 0.8rem;
+    }
+    .about-detail-row span:first-child {
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      min-width: 80px;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+    }
+    .about-detail-row span:last-child { color: var(--text); }
+
+    /* PROJECTS */
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 3rem;
+      background: var(--card);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease;
+    }
+    .project-card::before {
+      content: '01';
+      position: absolute;
+      top: 2rem; right: 2.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 300;
+      color: rgba(240,237,232,0.03);
+      line-height: 1;
+    }
+    .project-card:hover { border-color: var(--accent); }
+    .project-tag-row {
+      display: flex; gap: 0.8rem; flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .project-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(201,169,110,0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .project-subtitle {
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .project-desc {
+      font-size: 0.9rem;
+      color: rgba(240,237,232,0.55);
+      line-height: 1.9;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .project-link:hover { border-color: var(--accent); color: var(--accent); }
+    .project-link svg { width: 14px; height: 14px; }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+    .skill-item {
+      padding: 2rem 2rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.3s;
+    }
+    .skill-item:hover { background: rgba(201,169,110,0.04); }
+    .skill-item:nth-child(3n) { border-right: none; }
+    .skill-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .skill-name {
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* CONTACT */
+    #contact {
+      text-align: center;
+    }
+    #contact .section-title { margin-bottom: 1rem; }
+    .contact-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 4rem;
+    }
+    .contact-email {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      transition: border-color 0.3s, color 0.3s;
+      margin-bottom: 3rem;
+      display: block;
+    }
+    .contact-email:hover { color: var(--accent); border-color: var(--accent); }
+    .contact-links {
+      display: flex; justify-content: center; gap: 2.5rem;
+    }
+    .contact-link {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .contact-link:hover { color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 6rem 1.5rem; }
+      #home { padding: 0 1.5rem 4rem; }
+      .hero-line, .hero-scroll { display: none; }
+      #about .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .skill-item:nth-child(3n) { border-right: 1px solid var(--border); }
+      .skill-item:nth-child(2n) { border-right: none; }
+      .project-card { padding: 2rem; }
+    }
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .skill-item { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#home" class="nav-brand">Jiyoon Lee</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-bg-text">Fashion</div>
+    <div class="hero-line"></div>
+    <p class="hero-eyebrow">Portfolio — 2025</p>
+    <h1 class="hero-name">Jiyoon<br><em>Lee</em></h1>
+    <p class="hero-sub">Fashion Design · SKKU · Brand Marketer</p>
+    <span class="hero-scroll">Scroll to explore</span>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">01 — About</p>
+      <h2 class="section-title">Who I <em>am</em></h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-quote">
+        "Fashion is my passion — the marketing behind it, my curiosity."
+      </div>
+      <div class="about-body">
+        <p>Fashion is my big passion, and I've always been curious about the marketing behind my favorite brands. I want to grow into a marketer who can share cool styles with the world.</p>
+        <p>I sit at the intersection of aesthetic intuition and analytical thinking — studying how language, visuals, and brand voice work together to define what feels "trendy" in Korean fashion culture.</p>
+        <div class="about-detail">
+          <div class="about-detail-row">
+            <span>School</span>
+            <span>Sungkyunkwan University (SKKU)</span>
+          </div>
+          <div class="about-detail-row">
+            <span>Major</span>
+            <span>Fashion Design</span>
+          </div>
+          <div class="about-detail-row">
+            <span>Focus</span>
+            <span>Brand Marketing · Fashion Communication</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">02 — Projects</p>
+      <h2 class="section-title">Selected <em>work</em></h2>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag-row">
+        <span class="project-tag">Fashion Analysis</span>
+        <span class="project-tag">Brand Language</span>
+        <span class="project-tag">Korean Fashion</span>
+        <span class="project-tag">Data Dashboard</span>
+      </div>
+      <h3 class="project-title">The Language of Fashion Dashboard</h3>
+      <p class="project-subtitle">Analyzing How Korean Fashion Brands Construct Trendiness Through Words</p>
+      <p class="project-desc">An analytical project exploring the linguistic strategies Korean fashion brands use to communicate trendiness. By examining word choice, tone, and semantic patterns across brand copy, social media, and campaign messaging, this dashboard surfaces what "cool" really means in the Korean fashion lexicon.</p>
+      <a href="https://github.com/leejiyxxn-glitch/jiyoonlee.github.io" class="project-link" target="_blank" rel="noopener">
+        View on GitHub
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M7 17L17 7M17 7H7M17 7v10"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">03 — Skills</p>
+      <h2 class="section-title">What I <em>bring</em></h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-item">
+        <p class="skill-num">01</p>
+        <p class="skill-name">Fashion Design</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">02</p>
+        <p class="skill-name">Trend Analysis</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">03</p>
+        <p class="skill-name">Brand Marketing</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">04</p>
+        <p class="skill-name">Visual Merchandising</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">05</p>
+        <p class="skill-name">Creative Direction</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">06</p>
+        <p class="skill-name">Adobe Illustrator</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">07</p>
+        <p class="skill-name">Data Dashboard</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">08</p>
+        <p class="skill-name">Fashion Communication</p>
+      </div>
+      <div class="skill-item">
+        <p class="skill-num">09</p>
+        <p class="skill-name">Campaign Strategy</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <p class="section-label">04 — Contact</p>
+      <h2 class="section-title">Let's <em>connect</em></h2>
+      <p class="contact-sub">Open to collaborations, marketing projects & creative work.</p>
+      <a href="mailto:leejiyxxn@g.skku.edu" class="contact-email">leejiyxxn@g.skku.edu</a>
+      <div class="contact-links">
+        <a href="https://github.com/leejiyxxn-glitch/jiyoonlee.github.io" class="contact-link" target="_blank" rel="noopener">GitHub</a>
+        <span style="color:var(--border);">—</span>
+        <a href="mailto:leejiyxxn@g.skku.edu" class="contact-link">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Jiyoon Lee &nbsp;·&nbsp; Fashion Design, SKKU &nbsp;·&nbsp; All rights reserved
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx - 4 + 'px';
+      cursor.style.top = my - 4 + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx - 16) * 0.12;
+      ry += (my - ry - 16) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2)';
+        ring.style.width = '48px'; ring.style.height = '48px'; ring.style.opacity = '0.2';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        ring.style.width = '32px'; ring.style.height = '32px'; ring.style.opacity = '0.5';
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
